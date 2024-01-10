@@ -1,0 +1,31 @@
+providers:
+  docker:
+    swarmMode: true
+    network: sample-net
+    exposedbydefault: false
+
+# accessLog: {}
+
+# API and dashboard configuration
+api:
+  insecure: true
+  dashboard: true
+
+log:
+  level: DEBUG
+
+entryPoints:
+  web:
+    address: :80
+
+  websecure:
+    address: :443
+
+# http:
+#   routes:
+#     api-redirect:
+#     socket-redirect:
+#   services:
+#     # Define how to reach an existing service on our infrastructure
+#     api-service:
+#     socket-service:
