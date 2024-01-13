@@ -6,11 +6,6 @@ providers:
 
 # accessLog: {}
 
-# API and dashboard configuration
-api:
-  insecure: true
-  dashboard: true
-
 log:
   level: DEBUG
 

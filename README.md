@@ -4,12 +4,6 @@ Integrating Docker swarm on a simple NodeJS Application
 
 Step 1:
 
-```
-docker network create --driver overlay sample-net
-```
-
-Step 2:
-
 To host the repositories locally we can use a docker container called [registry:2](https://hub.docker.com/_/registry).
 
 
@@ -17,7 +11,7 @@ To host the repositories locally we can use a docker container called [registry:
 docker service create --name registry --publish published=5000,target=5000 registry:2
 ```
 
-Step 3:
+Step 2:
 
 Build the nodeapp service to create the image
 
@@ -31,9 +25,20 @@ Publish the image to the local registry
 docker compose -f docker-compose.yml push nodeapp
 ```
 
-Step 4:
+Step 3:
 
 Run docker swarm:
+
+retrieve the private IP address of the machine using the following command:
+```
+hostname -I | awk '{print $1}'
+```
+
+run the following command to enable docker swarm
+
+```
+docker swarm init --advertise-addr <public ip address>
+```
 
 ```
 docker stack deploy -c docker-compose.yml node_stack

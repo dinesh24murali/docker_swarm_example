@@ -10,7 +10,7 @@ services:
       - sample-net
     ports:
       - target: 80
-        published: 3030
+        published: 3000
         protocol: tcp
         mode: host
     volumes:
