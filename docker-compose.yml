@@ -1,12 +1,44 @@
 version: "3.9"
 
 services:
+
+  traefik:
+    image: traefik:v2.10.7
+    deploy:
+        mode: global
+    networks:
+      - sample-net
+    ports:
+      - target: 80
+        published: 3000
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   nodeapp:
+    image: 127.0.0.1:5000/nodeapp
+    networks:
+      - sample-net
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 1
+        delay: 15s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api-redirect.service=nodeapp-service"
+        - "traefik.http.routers.api-redirect.entryPoints=web"
+        - "traefik.http.routers.api-redirect.rule=PathPrefix(`/`)"
+        - "traefik.http.services.nodeapp-service.loadBalancer.server.port=3000"
     build:
       context: .
       args:
         NODE_ENV: production
-    ports:
-      - "3000:3000"
     command: ["npm", "run", "start"]
 
+networks:
+  sample-net:
