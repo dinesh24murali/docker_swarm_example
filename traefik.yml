@@ -24,3 +24,16 @@ entryPoints:
 #     # Define how to reach an existing service on our infrastructure
 #     api-service:
 #     socket-service:
+
+
+certificatesResolvers:
+  nodeapp_resolver:
+    acme:
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      certificatesDuration: 2160
+      email: email@gmail.com
+      storage: acme.json
+      httpChallenge:
+        # used during the challenge
+        entryPoint: web

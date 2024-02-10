@@ -9,8 +9,12 @@ services:
     networks:
       - sample-net
     ports:
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
       - target: 80
-        published: 3000
+        published: 80
         protocol: tcp
         mode: host
     volumes:
@@ -32,7 +36,9 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.api-redirect.service=nodeapp-service"
         - "traefik.http.routers.api-redirect.entryPoints=web"
-        - "traefik.http.routers.api-redirect.rule=PathPrefix(`/`)"
+        - "traefik.http.routers.api-redirect.tls=true"
+        - "traefik.http.routers.api-redirect.tls.certresolver=nodeapp_resolver"
+        - "traefik.http.routers.api-redirect.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/`)"
         - "traefik.http.services.nodeapp-service.loadBalancer.server.port=3000"
     build:
       context: .
