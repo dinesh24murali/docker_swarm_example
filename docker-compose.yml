@@ -5,7 +5,10 @@ services:
   traefik:
     image: traefik:v2.10.7
     deploy:
-        mode: global
+      mode: global
+      placement:
+        constraints:
+          - node.hostname==MasterHost
     networks:
       - sample-net
     ports:
